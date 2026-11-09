@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102f30">
+  <meta name="description" content="Prueba el flujo de mayoreo de Meraki B2B. Elige el volumen y prepara una solicitud de muestra desde tu navegador.">
+  <title>Mayoreo Meraki · Luis Vargas</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <div class="bar-inner">
+      <a href="../../index.html#proyectos" class="back">← <span>Portafolio de Luis Vargas</span></a>
+      <a href="https://github.com/Luisvvargas/meraki-b2b" rel="noreferrer">Proyecto original ↗</a>
+    </div>
+  </header>
+  <main>
+    <div class="intro">
+      <p class="eyebrow">Adaptación de Meraki B2B</p>
+      <h1>Compra mayorista</h1>
+      <p>Elige un volumen para tu negocio y prepara una solicitud de cotización de ejemplo.</p>
+    </div>
+    <div class="layout">
+      <aside class="product" aria-label="Producto">
+        <div class="product-banner">
+          <span class="sku">MRK-700</span>
+          <div class="bottle" aria-hidden="true"><i class="cap"></i><i class="neck"></i><i class="body"></i><i class="label">Meraki</i></div>
+        </div>
+        <div class="product-text">
+          <p class="eyebrow">Producto</p>
+          <h2>Vinagreta de tequila</h2>
+          <p>Meraki · Botella de 700 ml</p>
+          <dl>
+            <div><dt>Presentación</dt><dd>6 botellas por caja</dd></div>
+            <div><dt>Precio</dt><dd>Bajo petición</dd></div>
+          </dl>
+        </div>
+      </aside>
+      <section class="config" aria-labelledby="config-title">
+        <h2 id="config-title">Configura tu solicitud</h2>
+        <form id="order-form">
+          <fieldset>
+            <legend>Nivel de volumen</legend>
+            <div class="tiers">
+              <label class="tier"><input type="radio" name="tier" value="starter" checked><span>Inicial<small>6–11 botellas</small></span></label>
+              <label class="tier"><input type="radio" name="tier" value="restaurant"><span>Restaurante<small>12–23 botellas</small></span></label>
+              <label class="tier"><input type="radio" name="tier" value="hospitality"><span>Hotelería<small>24 o más</small></span></label>
+            </div>
+          </fieldset>
+          <div class="inputs">
+            <div><label for="quantity">Botellas</label>
+              <input id="quantity" type="number" min="6" max="11" step="1" value="6" inputmode="numeric" required aria-describedby="quantity-hint">
+              <small id="quantity-hint">De 6 a 11 en este nivel.</small>
+            </div>
+            <div><label for="account">Establecimiento de ejemplo</label>
+              <select id="account"><option>Bistró Ágora</option><option>Hotel Selene</option><option>Cocina Oliva</option></select>
+            </div>
+          </div>
+          <div class="summary" aria-live="polite"><span>Volumen total</span><strong id="liters">4.2 L</strong></div>
+          <button class="primary" type="submit">Generar borrador <span aria-hidden="true">→</span></button>
+          <p class="note">Simulación local con establecimientos ficticios. El borrador se genera en tu navegador.</p>
+        </form>
+        <section hidden id="receipt" class="receipt" aria-labelledby="receipt-title">
+          <h3 id="receipt-title" tabindex="-1">Borrador de cotización</h3>
+          <p id="receipt-summary"></p>
+          <p>Precio mayorista pendiente de confirmación.</p>
+          <button id="download" type="button" class="secondary">Descargar borrador (.txt)</button>
+        </section>
+        <noscript><p>Activa JavaScript para probar la selección de volumen y generar un borrador.</p></noscript>
+      </section>
+    </div>
+    <footer>Adaptación del selector de mayoreo de un proyecto universitario. <a href="https://github.com/Luisvvargas/meraki-b2b/blob/00dcabb24cb939c96b71b674067f6a15ab9f9c81/src/data/product.ts">Ver el catálogo y sus reglas ↗</a></footer>
+  </main>
+</body>
+</html>

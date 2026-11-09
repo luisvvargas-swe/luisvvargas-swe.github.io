@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Convierte una solicitud de refacciones en un borrador de cotización. Demo local con catálogo de ejemplo.">
+  <meta name="theme-color" content="#f6f5ef">
+  <title>Cotizador de refacciones · Luis Vargas</title>
+  <link rel="stylesheet" href="estilos.css">
+  <script defer src="cotizador.js"></script>
+  <script defer src="interfaz.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="top">
+      <a class="back" href="../../index.html#proyectos"><span aria-hidden="true">←</span> Portafolio de Luis Vargas</a>
+      <span class="byline">Demo de software</span>
+    </header>
+    <main>
+      <div class="intro">
+        <h1>Cotizador de refacciones<span>.</span></h1>
+        <p>Convierte una lista de piezas en una cotización. Revisa las coincidencias y corrige lo que falte antes de exportar.</p>
+      </div>
+      <div class="layout">
+        <section class="input-panel card" aria-labelledby="request-heading">
+          <div class="panel-head"><h2 id="request-heading">Solicitud</h2><button id="ejemplo" type="button" class="text-button">Cargar ejemplo</button></div>
+          <label for="solicitud">Lista de piezas</label>
+          <textarea id="solicitud" rows="8" spellcheck="false" maxlength="16000" aria-describedby="input-help"></textarea>
+          <p id="input-help" class="hint">Una pieza por renglón. Incluye el código o nombre y la cantidad.</p>
+          <button id="procesar" type="button" class="primary">Procesar lista <span aria-hidden="true">→</span></button>
+          <details>
+            <summary>Ver catálogo de ejemplo</summary>
+            <ul id="catalogo" class="catalog"></ul>
+          </details>
+        </section>
+        <section class="output-panel card" aria-labelledby="draft-heading">
+          <div class="panel-head"><h2 id="draft-heading">Borrador</h2><span class="currency">MXN</span></div>
+          <p id="estado" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
+          <ul id="partidas" class="lines" aria-label="Partidas de la cotización"></ul>
+          <div class="sum"><span>Subtotal confirmado</span><strong id="total">$0.00</strong></div>
+          <div class="export-row"><p class="hint">Precios de ejemplo, antes de impuestos.</p><button id="descargar" type="button" class="secondary">Descargar CSV <span aria-hidden="true">↓</span></button></div>
+        </section>
+      </div>
+      <noscript><p>Activa JavaScript en tu navegador para procesar la lista de piezas.</p></noscript>
+    </main>
+    <footer>Datos ficticios · Procesamiento local en tu navegador</footer>
+  </div>
+</body>
+</html>
