@@ -18,6 +18,11 @@ Contacto: luisvargas.swe@gmail.com
 - [Bliscan](https://github.com/luisvvargas-swe/Bliscan), contribuciones a la detección por cámara y documentación de un sistema de visión artificial en equipo.
 - [Biblioteca CETYS](https://github.com/luisvvargas-swe/dashboard_cetysdb), vistas de gestión, gráficas e ingresos de un proyecto universitario en equipo.
 - [NASA Space Apps](https://github.com/luisvvargas-swe/Nasa_Space_App), interfaz e integración de una experiencia educativa 3D desarrollada en equipo.
-- [EventosValle](https://github.com/luisvvargas-swe/EventosValle), aplicación de consola en C# con patrones de diseño.
 
 Khaos Performance Gym se presenta en la trayectoria como un proyecto privado para un negocio.
+
+## Nuevas versiones web
+
+- [Bliscan](https://luisvvargas-swe.github.io/proyectos/bliscan/)
+- [dashboard_cetysdb](https://luisvvargas-swe.github.io/proyectos/biblioteca/)
+- [Nasa_Space_App](https://luisvvargas-swe.github.io/proyectos/nasa/)
