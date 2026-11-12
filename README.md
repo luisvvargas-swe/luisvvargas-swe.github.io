@@ -2,16 +2,19 @@
 
 [Visitar el sitio](https://luisvvargas-swe.github.io/)
 
-Presentación compacta en blanco y negro, con un panel de vidrio sutil alrededor de todo el contenido. El bloque está centrado en pantalla y alineado a la izquierda.
+Portada mínima para ofrecer proyectos pequeños: apps web, chatbots de WhatsApp y soluciones QR/NFC. La experiencia profesional se presenta aparte, sin atribuir estos nuevos servicios a trabajos previos.
 
-## Interacción
+## Interacción y diseño
 
-- Los títulos de sección permanecen pequeños; clic o toque abre el contenido. Servicios está abierto al entrar.
-- El hover amplía cada detalle dentro de la sección (servicios, experiencia y texto de contacto). El foco de teclado ofrece la misma ampliación.
-- Teclado: Tab, Enter, flechas arriba/abajo, Inicio/Fin y Escape. La navegación tiene límites y no se repite.
-- Rueda o gesto vertical: rebote hacia el centro cuando la composición cabe en pantalla; desplazamiento normal cuando es más alta.
-- Fondo blanco, panel translúcido con borde luminoso y sombra tenue. Sin imágenes de fondo.
-- Se respetan las preferencias de movimiento y transparencia reducidos. El contenido funciona sin JavaScript.
+- Fondo blanco, bloque centrado y alineado a la izquierda. Lora para contenido editorial; Inter para controles secundarios. Inspiración tipográfica en Claude, sin usar sus fuentes propietarias.
+- Portada con nombres de servicios; descripciones ocultas hasta hacer clic. Hover pequeño, sin abrir ni revelar información.
+- Desplegables nativos con transición de altura de 420 ms; las aperturas y cierres rápidos pueden interrumpir la animación.
+- Un solo panel inspirado en Liquid Glass: mapa de desplazamiento de bordes en navegadores compatibles, brillo que sigue el cursor y respuesta al pulsar. Degradación a reflejos y desenfoque leve donde no se admite el filtro SVG. Es una aproximación web, no el material nativo de Apple. En blanco uniforme la refracción apenas es visible.
+- Se evita superponer superficies de vidrio; el contenido mantiene su legibilidad.
+- Tab, Enter, Escape y navegación con flechas entre elementos hermanos, sin repetición infinita. Se respetan movimiento y transparencia reducidos.
+- Un rebote limitado al usar la rueda devuelve el panel al centro cuando cabe; el contenido largo puede desplazarse normalmente. Sin JavaScript los desplegables nativos siguen funcionando.
+
+Referencia: https://developer.apple.com/videos/play/wwdc2025/219/
 
 ## Archivos
 
