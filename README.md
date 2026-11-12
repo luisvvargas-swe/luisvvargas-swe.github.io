@@ -6,15 +6,18 @@ Portada mínima para ofrecer proyectos pequeños: apps web, chatbots de WhatsApp
 
 ## Interacción y diseño
 
-- Fondo blanco, bloque centrado y alineado a la izquierda. Lora para contenido editorial; Inter para controles secundarios. Inspiración tipográfica en Claude, sin usar sus fuentes propietarias.
-- Portada con nombres de servicios; descripciones ocultas hasta hacer clic. Hover pequeño, sin abrir ni revelar información.
-- Desplegables nativos con transición de altura de 420 ms; las aperturas y cierres rápidos pueden interrumpir la animación.
-- Un solo panel inspirado en Liquid Glass: mapa de desplazamiento de bordes en navegadores compatibles, brillo que sigue el cursor y respuesta al pulsar. Degradación a reflejos y desenfoque leve donde no se admite el filtro SVG. Es una aproximación web, no el material nativo de Apple. En blanco uniforme la refracción apenas es visible.
-- Se evita superponer superficies de vidrio; el contenido mantiene su legibilidad.
-- Tab, Enter, Escape y navegación con flechas entre elementos hermanos, sin repetición infinita. Se respetan movimiento y transparencia reducidos.
-- Un rebote limitado al usar la rueda devuelve el panel al centro cuando cabe; el contenido largo puede desplazarse normalmente. Sin JavaScript los desplegables nativos siguen funcionando.
+- Fondo blanco y contenido centrado, alineado a la izquierda; sin paneles, bordes ni vidrio.
+- Una serif uniforme (Lora) para los nombres; Inter pequeño para contexto y contacto. Sin negritas parciales, cursivas ni subrayado decorativo.
+- Lista grande en reposo. Al pasar el cursor, solo el nombre activo se acerca y crece, ajustando la escala al ancho disponible. Los otros nombres se desplazan hacia atrás con perspectiva y desenfoque inferior a 1 px.
+- Las zonas que detectan el cursor permanecen inmóviles. Hover y foco no revelan información; clic o Enter abre los detalles.
+- Desplegables nativos animados, con padding y altura coordinados para evitar saltos al cerrar. El teclado puede recorrer toda la lista finita y cerrar con Escape.
+- En móvil táctil se conserva la lista legible y la apertura al tocar. Movimiento reducido e incremento de contraste desactivan los efectos que dificultarían la lectura.
+- Rueda: rebote limitado hacia el centro cuando el contenido cabe; desplazamiento normal si es más alto. Los desplegables funcionan sin JavaScript.
 
-Referencia: https://developer.apple.com/videos/play/wwdc2025/219/
+Referencias de interacción, no dependencias de código:
+- https://tympanus.net/Development/3DLettersMenuHover/ — perspectiva tipográfica.
+- https://www.reactbits.dev/text-animations/true-focus — foco y desenfoque.
+- https://web.dev/articles/animations-guide — uso de transformaciones y opacidad.
 
 ## Archivos
 

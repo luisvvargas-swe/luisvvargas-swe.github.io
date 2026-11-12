@@ -2,41 +2,91 @@
 const scene = document.querySelector('.scene');
 const composition = document.querySelector('.composition');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const reducedTransparency = matchMedia('(prefers-reduced-transparency: reduce)');
 const hoverPointer = matchMedia('(hover: hover) and (pointer: fine)');
 const disclosures = [...document.querySelectorAll('details')];
 const animations = new Map();
 const desired = new Map();
 const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
-function updateMaterial() {
-  composition.classList.toggle('is-expanded', disclosures.some(item => item.open));
-}
 function setExpanded(item, expanded) {
   const summary = item.querySelector(':scope > summary');
   const content = item.querySelector(':scope > .detail-content');
-  const from = item.getBoundingClientRect().height;
+  const from = item.open ? content.getBoundingClientRect().height : 0;
+  const currentStyle = getComputedStyle(content);
+  const fromPaddingTop = item.open ? currentStyle.paddingTop : '0px';
+  const fromPaddingBottom = item.open ? currentStyle.paddingBottom : '0px';
   animations.get(item)?.cancel();
   desired.set(item, expanded);
-  item.style.height = '';
   item.open = true;
+  content.style.height = '';
   content.inert = !expanded;
-  const to = expanded ? item.getBoundingClientRect().height : summary.offsetHeight + parseFloat(getComputedStyle(item).paddingTop) + parseFloat(getComputedStyle(item).borderTopWidth);
+  const to = expanded ? content.getBoundingClientRect().height : 0;
+  const targetStyle = getComputedStyle(content);
+  const toPaddingTop = expanded ? targetStyle.paddingTop : '0px';
+  const toPaddingBottom = expanded ? targetStyle.paddingBottom : '0px';
   const finish = () => {
     item.open = expanded;
-    item.style.height = '';
-    item.style.overflow = '';
+    content.style.height = '';
+    content.style.overflow = '';
     animations.delete(item);
-    updateMaterial();
   };
-  updateMaterial();
-  if (reducedMotion.matches || !item.animate) { finish(); return; }
-  item.style.overflow = 'hidden';
-  const animation = item.animate([{height:`${from}px`},{height:`${to}px`}], {
-    duration:420,easing:'cubic-bezier(.22,.8,.2,1)',fill:'both'
+  if (reducedMotion.matches || !content.animate) { finish(); return; }
+  content.style.overflow = 'hidden';
+  const animation = content.animate([{height:`${from}px`,paddingTop:fromPaddingTop,paddingBottom:fromPaddingBottom,opacity:expanded?.15:1},{height:`${to}px`,paddingTop:toPaddingTop,paddingBottom:toPaddingBottom,opacity:expanded?1:0}], {
+    duration:360,easing:'cubic-bezier(.22,.8,.2,1)',fill:'both'
   });
   animations.set(item, animation);
   animation.onfinish = () => { finish(); animation.cancel(); };
 }
+const deck = document.querySelector('.deck');
+const deckItems = [...deck.querySelectorAll('.offerings > .entry, .deck > .experience-group')];
+let hoveredItem = null;
+let activeItem = null;
+let keyboardMode = false;
+document.addEventListener('keydown',()=>{keyboardMode=true;},{capture:true});
+document.addEventListener('pointerdown',()=>{keyboardMode=false;},{capture:true});
+function focusItem() {
+  return (keyboardMode || document.activeElement?.matches(':focus-visible')) ? deckItems.find(item => item.contains(document.activeElement)) : null;
+}
+function highlight(item) {
+  activeItem = item || null;
+  deck.classList.toggle('has-focus', !!item);
+  const activeIndex = deckItems.indexOf(item);
+  deckItems.forEach((entry,index) => {
+    const distance = index-activeIndex;
+    const label = entry.querySelector(':scope > summary > .label');
+    entry.classList.toggle('is-front',entry===item);
+    // Labels move in depth; the summary hit areas remain stationary.
+    const depth = Math.min(Math.abs(distance),3);
+    entry.style.setProperty('--retreat-x',`${16+depth*10}px`);
+    entry.style.setProperty('--retreat-y',`${Math.sign(distance)*(14+depth*4)}px`);
+    entry.style.setProperty('--retreat-z',`${-65-depth*30}px`);
+    entry.style.setProperty('--retreat-angle',`${-Math.sign(distance)*(16+depth*4)}deg`);
+    entry.style.setProperty('--retreat-blur',`${.45+depth*.18}px`);
+    if(entry===item && label) {
+      const summary=entry.querySelector('summary');
+      // Account for perspective magnification and preserve room for the indicator.
+      const scale=Math.min(2.05,(summary.clientWidth-40)/label.offsetWidth*.91);
+      entry.style.setProperty('--front-scale',Math.max(1,scale).toFixed(3));
+    }
+  });
+}
+for(const item of deckItems){
+  item.querySelector('summary').addEventListener('pointerenter',()=>{
+    if(!hoverPointer.matches)return;
+    hoveredItem=item;if(!keyboardMode)highlight(item);
+  });
+}
+deck.addEventListener('pointermove',event=>{
+  if(!hoverPointer.matches || (!event.movementX && !event.movementY))return;
+  keyboardMode=false;
+  if(hoveredItem && hoveredItem!==activeItem)highlight(hoveredItem);
+});
+deck.addEventListener('pointerleave',()=>{hoveredItem=null;highlight(focusItem());});
+deck.addEventListener('focusin',()=>highlight(focusItem() || hoveredItem));
+deck.addEventListener('focusout',()=>setTimeout(()=>highlight(focusItem() || hoveredItem),0));
+window.addEventListener('resize',()=>{position=velocity=0;paint();if(activeItem)highlight(activeItem);});
+if(document.fonts)document.fonts.ready.then(()=>{if(activeItem)highlight(activeItem);});
+
 for (const item of disclosures) {
   const summary = item.querySelector(':scope > summary');
   summary.addEventListener('click', event => {
@@ -44,14 +94,21 @@ for (const item of disclosures) {
     setExpanded(item, !(desired.has(item) ? desired.get(item) : item.open));
   });
   summary.addEventListener('keydown', event => {
-    const siblings = [...item.parentElement.children].filter(element => element.tagName === 'DETAILS');
+    const siblings = deckItems.includes(item) ? deckItems : [...item.parentElement.children].filter(element => element.tagName === 'DETAILS');
     const index = siblings.indexOf(item);
     let target;
     if (event.key === 'ArrowDown') target = siblings[Math.min(index + 1, siblings.length - 1)];
     if (event.key === 'ArrowUp') target = siblings[Math.max(index - 1, 0)];
     if (event.key === 'Home') target = siblings[0];
     if (event.key === 'End') target = siblings.at(-1);
-    if (target) { event.preventDefault(); event.stopPropagation(); target.querySelector('summary').focus({preventScroll:true}); }
+    if (target) {
+      event.preventDefault(); event.stopPropagation();
+      const next = target.querySelector('summary');
+      next.focus({preventScroll:true});
+      const rect = next.getBoundingClientRect();
+      const viewport = scene.getBoundingClientRect();
+      if(rect.top < viewport.top || rect.bottom > viewport.bottom) next.scrollIntoView({block:'nearest',behavior:'instant'});
+    }
   });
 }
 scene.addEventListener('keydown', event => {
@@ -84,57 +141,6 @@ reducedMotion.addEventListener('change',()=>{
   cancelAnimationFrame(frame);position=velocity=frame=0;paint();
   for(const [item,animation] of [...animations]) {animation.cancel();setExpanded(item,desired.get(item));}
 });
-// Edge-normal displacement map: rounded lens edges, neutral center, no distortion on text.
-const mapImage = document.getElementById('glass-map');
-const lensCanvas = document.createElement('canvas');
-const lensContext = lensCanvas.getContext('2d');
-let previousMapSize='', lensFrame=0;
-function updateLens() {
-  lensFrame=0;
-  if (!lensContext || reducedTransparency.matches) return;
-  const box=composition.getBoundingClientRect();
-  const width=Math.ceil(box.width/2),height=Math.ceil(box.height/2);
-  const key=`${width}:${height}`;
-  if(key===previousMapSize)return;
-  previousMapSize=key;lensCanvas.width=width;lensCanvas.height=height;
-  const pixels=lensContext.createImageData(width,height);
-  const radius=parseFloat(getComputedStyle(composition).borderRadius)/2,edge=9;
-  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
-    const px=x-width/2,py=y-height/2;
-    const qx=Math.abs(px)-(width/2-radius),qy=Math.abs(py)-(height/2-radius);
-    const ox=Math.max(qx,0),oy=Math.max(qy,0),distance=Math.hypot(ox,oy);
-    const inside=-(distance+Math.min(Math.max(qx,qy),0)-radius);
-    const strength=inside>0&&inside<edge?Math.sin(Math.PI*inside/edge):0;
-    const nx=distance?ox/distance*Math.sign(px):qx>qy?Math.sign(px):0;
-    const ny=distance?oy/distance*Math.sign(py):qy>=qx?Math.sign(py):0;
-    const i=(y*width+x)*4;
-    pixels.data[i]=128+nx*strength*105;pixels.data[i+1]=128+ny*strength*105;
-    pixels.data[i+2]=128;pixels.data[i+3]=255;
-  }
-  lensContext.putImageData(pixels,0,0);mapImage.setAttribute('href',lensCanvas.toDataURL());
-  composition.classList.add('glass-ready');
-}
-function scheduleLens(){if(!lensFrame)lensFrame=requestAnimationFrame(updateLens);}
-if('ResizeObserver' in window)new ResizeObserver(scheduleLens).observe(composition);
-scheduleLens();
-let lightFrame=0,lightX=.22,lightY=.1;
-function paintLight(){
-  lightFrame=0;
-  composition.style.setProperty('--light-x',`${lightX*100}%`);
-  composition.style.setProperty('--light-y',`${lightY*100}%`);
-  composition.style.setProperty('--light-angle',`${90+lightX*110}deg`);
-}
-composition.addEventListener('pointermove',event=>{
-  if(!hoverPointer.matches||reducedMotion.matches)return;
-  const box=composition.getBoundingClientRect();
-  lightX=clamp((event.clientX-box.left)/box.width,0,1);lightY=clamp((event.clientY-box.top)/box.height,0,1);
-  if(!lightFrame)lightFrame=requestAnimationFrame(paintLight);
-});
-composition.addEventListener('pointerleave',()=>{lightX=.22;lightY=.1;paintLight();composition.classList.remove('is-pressing');});
-composition.addEventListener('pointerdown',()=>{if(!reducedMotion.matches)composition.classList.add('is-pressing');});
-window.addEventListener('pointerup',()=>composition.classList.remove('is-pressing'));
-window.addEventListener('pointercancel',()=>composition.classList.remove('is-pressing'));
-window.addEventListener('resize',()=>{position=velocity=0;paint();scheduleLens();});
 function openHash(){
   const id=location.hash.slice(1);
   if(!id)return;
