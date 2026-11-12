@@ -2,16 +2,16 @@
 
 [Visitar el sitio](https://luisvvargas-swe.github.io/)
 
-Presentación tipográfica en blanco y negro. El bloque está centrado en pantalla; todo su contenido se alinea a la izquierda. Tres secciones desplegables: servicios, experiencia y contacto. Inter como familia tipográfica; los títulos crecen al explorar cada sección. Lista finita sin duplicados ni navegación circular.
+Presentación compacta en blanco y negro, con un panel de vidrio sutil alrededor de todo el contenido. El bloque está centrado en pantalla y alineado a la izquierda.
 
 ## Interacción
 
-- Cursor: ampliación de 14 a 56 px en filas estables, con inclinación de las opciones vecinas para sugerir un tambor. Clic para abrir o cerrar el contenido.
-- Móvil: un toque abre o cierra el contenido.
-- Teclado: Tab, Enter, flechas arriba/abajo, Inicio/Fin y Escape.
-- Rueda o gesto vertical: desplazamiento elástico que devuelve la composición al centro cuando cabe en la pantalla. Si el contenido es más alto que la pantalla, se conserva el desplazamiento normal para acceder a todo.
-- Superficie blanca y lista tipográfica, sin vidrio, desenfoque, reflejos ni sombras.
-- Se respetan las preferencias de movimiento reducido. Los desplegables y enlaces funcionan sin JavaScript; el rebote y el enfoque tipográfico al pasar el cursor requieren JavaScript.
+- Los títulos de sección permanecen pequeños; clic o toque abre el contenido. Servicios está abierto al entrar.
+- El hover amplía cada detalle dentro de la sección (servicios, experiencia y texto de contacto). El foco de teclado ofrece la misma ampliación.
+- Teclado: Tab, Enter, flechas arriba/abajo, Inicio/Fin y Escape. La navegación tiene límites y no se repite.
+- Rueda o gesto vertical: rebote hacia el centro cuando la composición cabe en pantalla; desplazamiento normal cuando es más alta.
+- Fondo blanco, panel translúcido con borde luminoso y sombra tenue. Sin imágenes de fondo.
+- Se respetan las preferencias de movimiento y transparencia reducidos. El contenido funciona sin JavaScript.
 
 ## Archivos
 

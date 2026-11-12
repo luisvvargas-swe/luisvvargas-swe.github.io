@@ -3,20 +3,7 @@ const scene = document.querySelector('.scene');
 const composition = document.querySelector('.composition');
 const items = [...document.querySelectorAll('.item')];
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const hoverPointer = matchMedia('(hover: hover) and (pointer: fine)');
-let pinned = null;
-let suppressFocus = false;
-const menu = document.querySelector('.text-menu');
-let hovered = null;
-function highlight(item) {
-  const index = items.indexOf(item);
-  menu.classList.toggle('has-active', index >= 0);
-  items.forEach((entry, i) => {
-    entry.classList.toggle('is-active', entry === item);
-    entry.classList.toggle('is-far', index >= 0 && Math.abs(i - index) > 1);
-    entry.style.setProperty('--tilt', `${i < index ? -35 : 35}deg`);
-  });
-}
+let pinned = items.find(item => item.open) || null;
 let position = 0;
 let velocity = 0;
 let frame = 0;
@@ -59,38 +46,22 @@ function changeLayout(update) {
   } else { position = velocity = 0; paint(); }
 }
 function activate(item) {
-  highlight(item);
   if (item.open && items.every(other => other === item || !other.open)) return;
   changeLayout(() => { for (const other of items) other.open = other === item; });
 }
 function close(item) {
   if (!item.open) return;
   changeLayout(() => { item.open = false; });
-  highlight(hovered);
 }
 function focusSummary(item) {
-  suppressFocus = true;
   item.querySelector('summary').focus({preventScroll:true});
-  suppressFocus = false;
 }
 for (const item of items) {
   const summary = item.querySelector('summary');
-  summary.addEventListener('pointerenter', () => {
-    if (!hoverPointer.matches) return;
-    hovered = item; highlight(item);
-  });
-  summary.addEventListener('pointerleave', () => {
-    hovered = null;
-    highlight(pinned || items.find(entry => entry.contains(document.activeElement)) || null);
-  });
   summary.addEventListener('click', event => {
     event.preventDefault();
     if (pinned === item && item.open) { pinned = null; close(item); }
     else { pinned = item; activate(item); }
-  });
-  item.addEventListener('focusin', () => { if (!suppressFocus) highlight(item); });
-  item.addEventListener('focusout', () => {
-    setTimeout(() => highlight(hovered || pinned || items.find(entry => entry.contains(document.activeElement)) || null), 0);
   });
   summary.addEventListener('keydown', event => {
     const index = items.indexOf(item);
