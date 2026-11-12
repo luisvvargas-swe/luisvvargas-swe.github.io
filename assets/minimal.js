@@ -129,17 +129,6 @@ scene.addEventListener('touchend', release, {passive:true});
 scene.addEventListener('touchcancel', release, {passive:true});
 window.addEventListener('resize', () => { position = velocity = 0; release(); paint(); });
 reducedMotion.addEventListener('change', () => { position = velocity = 0; dragging = false; paint(); });
-for (const element of document.querySelectorAll('.liquid')) {
-  element.addEventListener('pointermove', event => {
-    if (!hoverPointer.matches || reducedMotion.matches) return;
-    const box = element.getBoundingClientRect();
-    element.style.setProperty('--light-x', `${event.clientX - box.left}px`);
-    element.style.setProperty('--light-y', `${event.clientY - box.top}px`);
-  });
-  element.addEventListener('pointerleave', () => {
-    element.style.removeProperty('--light-x');element.style.removeProperty('--light-y');
-  });
-}
 function openHash() {
   const item = items.find(entry => `#${entry.id}` === location.hash);
   if (item) { pinned = item; activate(item); if (fits()) scene.scrollTop = 0; }

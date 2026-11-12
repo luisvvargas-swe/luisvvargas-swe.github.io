@@ -11,7 +11,6 @@
 </head>
 <body>
 <a class="skip" href="#inicio">Saltar al contenido</a>
-<svg class="filter-defs" aria-hidden="true" width="0" height="0"><defs><filter id="glass-refraction" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="1" seed="4" result="noise"/><feGaussianBlur in="noise" stdDeviation="3" result="soft-noise"/><feDisplacementMap in="SourceGraphic" in2="soft-noise" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
 <main class="scene" id="inicio" tabindex="-1">
  <div class="center-space">
   <div class="composition">
@@ -21,8 +20,7 @@
     <p class="intro">Herramientas simples.<br>Para hacer mejor tu trabajo.</p>
    </header>
    <div class="menu-wrap">
-    <div class="glass-underlay" aria-hidden="true"></div>
-    <div class="glass-menu liquid" aria-label="Servicios, experiencia y contacto">
+    <div class="text-menu" aria-label="Servicios, experiencia y contacto">
      <details class="item" id="servicios">
       <summary aria-controls="servicios-panel"><span>En qué puedo ayudarte</span><span class="indicator" aria-hidden="true">+</span></summary>
       <div class="preview" id="servicios-panel">
@@ -51,7 +49,7 @@
       <summary aria-controls="contacto-panel"><span>Hablemos de tu proyecto</span><span class="indicator" aria-hidden="true">+</span></summary>
       <div class="preview contact" id="contacto-panel">
        <p>Cuéntame qué haces hoy<br>y qué te gustaría mejorar.</p>
-       <a class="glass-button liquid" href="mailto:luisvargas.swe@gmail.com?subject=Hablemos%20de%20mi%20proyecto">Escríbeme <span aria-hidden="true">↗</span></a>
+       <a class="contact-button" href="mailto:luisvargas.swe@gmail.com?subject=Hablemos%20de%20mi%20proyecto">Escríbeme <span aria-hidden="true">↗</span></a>
        <a class="email" href="mailto:luisvargas.swe@gmail.com">luisvargas.swe@gmail.com</a>
       </div>
      </details>
