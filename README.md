@@ -2,21 +2,21 @@
 
 [Visitar el sitio](https://luisvvargas-swe.github.io/)
 
-Presentación tipográfica en blanco y negro. El bloque está centrado en pantalla; todo su contenido se alinea a la izquierda. Tres secciones desplegables: servicios, experiencia y contacto. Inter como familia tipográfica; los títulos crecen al explorar cada sección.
+Presentación tipográfica en blanco y negro. El bloque está centrado en pantalla; todo su contenido se alinea a la izquierda. Tres secciones desplegables: servicios, experiencia y contacto. Inter como familia tipográfica; los títulos crecen al explorar cada sección. Lista finita sin duplicados ni navegación circular.
 
 ## Interacción
 
-- Cursor: vista previa al entrar en una sección; clic para mantenerla abierta.
+- Cursor: ampliación de 14 a 56 px en filas estables, con inclinación de las opciones vecinas para sugerir un tambor. Clic para abrir o cerrar el contenido.
 - Móvil: un toque abre o cierra el contenido.
 - Teclado: Tab, Enter, flechas arriba/abajo, Inicio/Fin y Escape.
 - Rueda o gesto vertical: desplazamiento elástico que devuelve la composición al centro cuando cabe en la pantalla. Si el contenido es más alto que la pantalla, se conserva el desplazamiento normal para acceder a todo.
 - Superficie blanca y lista tipográfica, sin vidrio, desenfoque, reflejos ni sombras.
-- Se respetan las preferencias de movimiento reducido. Los desplegables y enlaces funcionan sin JavaScript; el rebote y las vistas previas al pasar el cursor requieren JavaScript.
+- Se respetan las preferencias de movimiento reducido. Los desplegables y enlaces funcionan sin JavaScript; el rebote y el enfoque tipográfico al pasar el cursor requieren JavaScript.
 
 ## Archivos
 
 - `index.html`: contenido y desplegables nativos.
-- `assets/minimal.css`: diseño, vidrio y adaptación a pantallas pequeñas.
+- `assets/minimal.css`: diseño tipográfico y adaptación a pantallas pequeñas.
 - `assets/minimal.js`: expansión y resorte.
 - `assets/monogram.svg`: icono del sitio.
 

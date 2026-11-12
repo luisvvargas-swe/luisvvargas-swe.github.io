@@ -6,7 +6,17 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const hoverPointer = matchMedia('(hover: hover) and (pointer: fine)');
 let pinned = null;
 let suppressFocus = false;
-let closeTimer;
+const menu = document.querySelector('.text-menu');
+let hovered = null;
+function highlight(item) {
+  const index = items.indexOf(item);
+  menu.classList.toggle('has-active', index >= 0);
+  items.forEach((entry, i) => {
+    entry.classList.toggle('is-active', entry === item);
+    entry.classList.toggle('is-far', index >= 0 && Math.abs(i - index) > 1);
+    entry.style.setProperty('--tilt', `${i < index ? -35 : 35}deg`);
+  });
+}
 let position = 0;
 let velocity = 0;
 let frame = 0;
@@ -49,13 +59,14 @@ function changeLayout(update) {
   } else { position = velocity = 0; paint(); }
 }
 function activate(item) {
-  clearTimeout(closeTimer);
+  highlight(item);
   if (item.open && items.every(other => other === item || !other.open)) return;
   changeLayout(() => { for (const other of items) other.open = other === item; });
 }
 function close(item) {
   if (!item.open) return;
   changeLayout(() => { item.open = false; });
+  highlight(hovered);
 }
 function focusSummary(item) {
   suppressFocus = true;
@@ -64,39 +75,31 @@ function focusSummary(item) {
 }
 for (const item of items) {
   const summary = item.querySelector('summary');
-  item.addEventListener('pointerenter', () => {
+  summary.addEventListener('pointerenter', () => {
     if (!hoverPointer.matches) return;
-    // Do not hide another panel while the visitor is using its links with the keyboard.
-    if (items.some(other => other !== item && other.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) return;
-    activate(item);
+    hovered = item; highlight(item);
   });
-  item.addEventListener('pointerleave', () => {
-    if (!hoverPointer.matches) return;
-    clearTimeout(closeTimer);
-    closeTimer = setTimeout(() => {
-      if (pinned && pinned !== item) activate(pinned);
-      else if (pinned !== item && !item.contains(document.activeElement)) close(item);
-    }, 180);
+  summary.addEventListener('pointerleave', () => {
+    hovered = null;
+    highlight(pinned || items.find(entry => entry.contains(document.activeElement)) || null);
   });
   summary.addEventListener('click', event => {
     event.preventDefault();
     if (pinned === item && item.open) { pinned = null; close(item); }
     else { pinned = item; activate(item); }
   });
-  item.addEventListener('focusin', () => { if (!suppressFocus) activate(item); });
+  item.addEventListener('focusin', () => { if (!suppressFocus) highlight(item); });
   item.addEventListener('focusout', () => {
-    setTimeout(() => {
-      if (!item.contains(document.activeElement) && pinned !== item && !item.matches(':hover')) close(item);
-    }, 0);
+    setTimeout(() => highlight(hovered || pinned || items.find(entry => entry.contains(document.activeElement)) || null), 0);
   });
   summary.addEventListener('keydown', event => {
     const index = items.indexOf(item);
     let destination;
-    if (event.key === 'ArrowDown') destination = items[(index + 1) % items.length];
-    if (event.key === 'ArrowUp') destination = items[(index + items.length - 1) % items.length];
+    if (event.key === 'ArrowDown') destination = items[Math.min(index + 1, items.length - 1)];
+    if (event.key === 'ArrowUp') destination = items[Math.max(index - 1, 0)];
     if (event.key === 'Home') destination = items[0];
     if (event.key === 'End') destination = items[items.length - 1];
-    if (destination) { event.preventDefault(); pinned = null; destination.querySelector('summary').focus({preventScroll:true}); }
+    if (destination) { event.preventDefault(); destination.querySelector('summary').focus({preventScroll:true}); }
   });
 }
 scene.addEventListener('keydown', event => {
