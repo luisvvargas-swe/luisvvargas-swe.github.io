@@ -42,3 +42,5 @@ footer a span,.text-link span[aria-hidden]{transition:transform .25s}footer a:ho
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.composition,.label,footer a span,.text-link span{transform:none!important;filter:none!important;opacity:1!important}.is-front>summary>.label{color:#000}}
 @media(prefers-contrast:more){.label{filter:none!important;opacity:1!important}.detail-content,.identity p,footer a{color:#333}}
 @media print{html,body,.scene{height:auto;overflow:visible}.center-space{padding:0}.composition,.label{transform:none!important;filter:none!important;opacity:1!important}.skip,.indicator{display:none}details::details-content{content-visibility:visible}.detail-content{display:block!important}}
+
+.experience-intro{font-size:15px;line-height:1.75;max-width:530px;margin:0 0 20px!important}.project-link{font-size:13px;gap:9px;color:#222;min-height:44px;margin-top:10px}.project-link:hover{color:#000}
